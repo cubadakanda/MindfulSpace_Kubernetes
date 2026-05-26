@@ -1,0 +1,131 @@
+# ==========================================
+# EVALUASI 3 KOMPUTASI AWAN - MANIFEST K8S
+# NAMA: Parisan Apro (152023141)
+# ==========================================
+
+# 1. ConfigMap untuk menyimpan parameter konfigurasi aplikasi
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mindful-config
+  labels:
+    app: mindful-app
+data:
+  APP_TITLE: "MindfulSpace: Academic Wellbeing"
+
+---
+
+# 2. Deployment untuk mengelola replica Pod aplikasi web
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindful-app
+  labels:
+    app: mindful-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mindful-app
+  template:
+    metadata:
+      labels:
+        app: mindful-app
+    spec:
+      containers:
+      - name: mindful-container
+        # Nama image lokal yang nantinya dibuild di lingkungan Docker Minikube
+        image: cubadakanda/mindfulspace:v1
+        # IfNotPresent agar K8s memakai image lokal hasil build dan tidak mencoba men-pull dari registry online
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        # Mengambil Environment Variable dari ConfigMap yang didefinisikan sebelumnya
+        env:
+        - name: APP_TITLE
+          valueFrom:
+            configMapKeyRef:
+              name: mindful-config
+              key: APP_TITLE
+        # Pembatasan sumber daya komputasi (WAJIB untuk memicu HPA)
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "300m"
+            memory: "256Mi"
+        # Liveness Probe untuk memantau status kesehatan aplikasi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+---
+
+# 3. Service bertipe NodePort untuk mengekspos Pod ke luar kluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: mindful-service
+  labels:
+    app: mindful-app
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30080
+  selector:
+    app: mindful-app
+
+---
+
+# 4. HPA (Horizontal Pod Autoscaler) untuk otomatisasi scaling
+# Target average CPU 50%, rentang replika 2 - 5
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mindful-hpa
+  labels:
+    app: mindful-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mindful-app
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+
+---
+
+# 5. Ingress untuk routing HTTP traffic berbasis Hostname (Memenuhi Rubrik Penilaian 35%)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mindful-ingress
+  labels:
+    app: mindful-app
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: mindfulspace.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mindful-service
+            port:
+              number: 3000

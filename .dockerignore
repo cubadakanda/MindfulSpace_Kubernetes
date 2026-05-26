@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.git
+Dockerfile
+.dockerignore
+k8s-manifests.yaml
+.system_generated
+.gemini

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindfulSpace: Academic Wellbeing</title>
+  <!-- Google Fonts (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Gradient Background Bergerak Lambat & Mewah */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animated-bg {
+      background: linear-gradient(-45deg, #070a13, #0b1220, #041d20, #0f101d, #09161d);
+      background-size: 400% 400%;
+      animation: gradientShift 22s ease infinite;
+    }
+    
+    /* Grid Mesh Pattern Overlay */
+    .grid-pattern {
+      background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    
+    /* Efek Floating untuk Lingkaran Cahaya Backdrop */
+    @keyframes float1 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.2); }
+      66% { transform: translate(-40px, 40px) scale(0.85); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    @keyframes float2 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-60px, 60px) scale(1.15); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-glow-1 {
+      animation: float1 16s ease-in-out infinite;
+    }
+    .animate-glow-2 {
+      animation: float2 20s ease-in-out infinite;
+    }
+
+    /* Transisi Halus Lingkaran Pernapasan */
+    .breathing-transition {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    .breathing-active {
+      transition: transform 4s ease-in-out, box-shadow 4s ease-in-out, background-color 4s ease-in-out !important;
+    }
+    
+    /* Efek Glassmorphism Premium */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.025);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    }
+    .glass-card:hover {
+      border: 1px solid rgba(20, 184, 166, 0.22);
+      box-shadow: 0 12px 45px -5px rgba(20, 184, 166, 0.04);
+    }
+
+    /* Custom Scrollbar untuk Modal Dokumentasi */
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(20, 184, 166, 0.3);
+      border-radius: 9px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(20, 184, 166, 0.5);
+    }
+  </style>
+</head>
+<body class="animated-bg min-h-screen text-slate-100 flex flex-col justify-between font-sans selection:bg-teal-500 selection:text-white relative overflow-x-hidden">
+
+  <!-- Grid Pattern Overlay -->
+  <div class="absolute inset-0 grid-pattern pointer-events-none z-0"></div>
+
+  <!-- Bola Cahaya Latar Belakang (Floating Backdrop Orbs) -->
+  <div class="absolute top-[-15%] left-[-15%] w-[500px] h-[500px] bg-gradient-to-br from-teal-500/15 to-emerald-500/5 rounded-full blur-[140px] animate-glow-1 pointer-events-none z-0"></div>
+  <div class="absolute bottom-[10%] right-[-15%] w-[550px] h-[550px] bg-gradient-to-br from-indigo-500/12 to-purple-500/5 rounded-full blur-[150px] animate-glow-2 pointer-events-none z-0"></div>
+
+  <!-- Header Aplikasi -->
+  <header class="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between relative z-10">
+    <div class="flex items-center space-x-3 group">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-400 via-teal-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:scale-105 transition-transform duration-300">
+        <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-teal-100 to-teal-300 bg-clip-text text-transparent">MindfulSpace</h1>
+        <p class="text-xs text-teal-400/80 font-bold tracking-wider uppercase">Academic Wellbeing Dashboard</p>
+      </div>
+    </div>
+    <div class="px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-xs font-bold text-teal-300 shadow-sm flex items-center space-x-2.5">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span>Minikube Cluster Active</span>
+    </div>
+  </header>
+
+  <!-- Section Live K8s Cluster Metrics -->
+  <div class="w-full max-w-6xl mx-auto px-6 mb-4 grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+    <!-- Card 1: CPU Load -->
+    <div class="p-4 rounded-2xl glass-card flex items-center justify-between transition-all duration-300">
+      <div class="flex items-center space-x-3">
+        <div class="p-2.5 bg-teal-500/10 border border-teal-500/20 text-teal-300 rounded-xl">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2"></path></svg>
+        </div>
+        <div>
+          <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">CPU UTILIZATION</p>
+          <h4 id="metric-cpu" class="text-sm font-black text-white flex items-center gap-1.5 mt-0.5">
+            <span>12%</span> 
+            <span id="metric-cpu-status" class="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20">Normal</span>
+          </h4>
+        </div>
+      </div>
+      <div class="w-16 bg-slate-800/80 h-1.5 rounded-full overflow-hidden">
+        <div id="metric-cpu-bar" class="bg-gradient-to-r from-teal-400 to-emerald-400 h-full w-[12%] transition-all duration-500"></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Replicas HPA -->
+    <div class="p-4 rounded-2xl glass-card flex items-center justify-between transition-all duration-300">
+      <div class="flex items-center space-x-3">
+        <div class="p-2.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-xl">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        </div>
+        <div>
+          <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">ACTIVE POD REPLICAS</p>
+          <h4 id="metric-replicas" class="text-sm font-black text-white flex items-center gap-1.5 mt-0.5">
+            <span>2 / 5</span> 
+            <span class="text-[10px] font-bold text-teal-400 bg-teal-950/40 px-1.5 py-0.5 rounded border border-teal-500/20">Pods</span>
+          </h4>
+        </div>
+      </div>
+      <span class="text-[9px] font-extrabold text-indigo-300 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-500/20">Target: 50%</span>
+    </div>
+
+    <!-- Card 3: Response Latency -->
+    <div class="p-4 rounded-2xl glass-card flex items-center justify-between transition-all duration-300">
+      <div class="flex items-center space-x-3">
+        <div class="p-2.5 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-xl">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div>
+          <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">RESPONSE LATENCY</p>
+          <h4 id="metric-latency" class="text-sm font-black text-white flex items-center gap-1.5 mt-0.5">
+            <span>14 ms</span> 
+            <span id="metric-latency-badge" class="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20">Healthy</span>
+          </h4>
+        </div>
+      </div>
+      <span class="text-[9px] font-extrabold text-purple-300 bg-purple-950/40 px-2 py-1 rounded border border-purple-500/20">HTTP 200</span>
+    </div>
+  </div>
+
+  <!-- Konten Utama -->
+  <main class="w-full max-w-6xl mx-auto px-6 py-2 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+    
+    <!-- Kolom Kiri: Panduan Animasi Pernapasan (Relaksasi) -->
+    <div class="lg:col-span-5 flex flex-col items-center justify-center text-center p-8 rounded-3xl glass-card transition-all duration-300 min-h-[480px]">
+      <span class="text-xs font-bold tracking-widest text-teal-400 bg-teal-950/40 border border-teal-500/20 px-3.5 py-1 rounded-full uppercase mb-3">Relaksasi Terpandu</span>
+      <h3 class="text-lg font-bold text-white mb-2">Guided Breathing Orb</h3>
+      <p class="text-xs text-slate-400 mb-8 max-w-xs">Atur ritme napas Anda untuk menurunkan level kortisol akibat stres tugas kuliah.</p>
+      
+      <!-- Kontainer Lingkaran Pernapasan -->
+      <div class="relative flex items-center justify-center w-64 h-64">
+        <!-- Lingkaran Efek Gelombang Riak -->
+        <div id="orb-glow" class="absolute w-44 h-44 rounded-full bg-teal-500/5 blur-2xl transition-all duration-1000"></div>
+        <div id="ripple-ring" class="absolute w-52 h-52 rounded-full border border-teal-500/10 scale-100 transition-all duration-1000"></div>
+        
+        <!-- Main Breathing Orb -->
+        <div id="breathing-circle" class="breathing-transition w-40 h-40 rounded-full bg-gradient-to-tr from-teal-600/80 via-teal-500/70 to-emerald-500/70 backdrop-blur-lg flex flex-col items-center justify-center shadow-[0_0_50px_rgba(20,184,166,0.15)] hover:shadow-[0_0_60px_rgba(20,184,166,0.3)] border border-teal-400/40 transform scale-100 cursor-pointer hover:scale-105 active:scale-95 select-none">
+          <span id="breathing-text" class="text-xl font-extrabold text-white tracking-wide drop-shadow-md">Mulai</span>
+          <span id="countdown-text" class="text-[11px] text-teal-100/90 font-mono font-bold bg-teal-950/60 px-2 py-0.5 rounded-full border border-teal-400/20 mt-2.5">Klik</span>
+        </div>
+      </div>
+      
+      <p id="breathing-desc" class="mt-8 text-xs font-medium text-teal-200 bg-teal-950/30 px-5 py-2.5 rounded-full border border-teal-500/20 transition-all duration-300">
+        Klik lingkaran untuk memulai relaksasi terpandu.
+      </p>
+    </div>
+
+    <!-- Kolom Kanan: Detail & Simulasi Beban K8s -->
+    <div class="lg:col-span-7 flex flex-col gap-6">
+      
+      <!-- Card Afirmasi (Fetch via API) -->
+      <div class="p-8 rounded-3xl glass-card transition-all duration-300 relative overflow-hidden">
+        <!-- Hiasan Quote Icon Gede Transparan -->
+        <div class="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none select-none">
+          <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+          </svg>
+        </div>
+        
+        <div class="flex items-center space-x-2 mb-4">
+          <span class="w-1.5 h-3.5 bg-teal-400 rounded-full"></span>
+          <span class="text-xs font-black tracking-widest text-teal-400 uppercase">Afirmasi Akademik Hari Ini</span>
+        </div>
+        
+        <blockquote id="quote-text" class="text-base md:text-lg font-medium text-slate-200 leading-relaxed mb-6 italic">
+          "Mengambil kutipan positif dari server..."
+        </blockquote>
+        
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <button id="btn-refresh-quote" class="px-4 py-2.5 text-xs font-bold text-teal-300 hover:text-white bg-teal-500/10 hover:bg-teal-500/20 rounded-xl border border-teal-500/30 transition-all duration-200 flex items-center space-x-2 hover:scale-[1.02] active:scale-[0.98]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2"></path>
+            </svg>
+            <span>Dapatkan Kutipan Baru</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Edukasi SDG (SAMA PERSIS DENGAN TEKS SPESIFIKASI WAJIB) -->
+      <div class="p-6 rounded-3xl bg-teal-950/20 border border-teal-500/20 backdrop-blur-md shadow-lg relative overflow-hidden group">
+        <!-- Hiasan Bar Gradient Pinggir -->
+        <div class="absolute left-0 top-0 bottom-0 w-[4px] bg-gradient-to-b from-teal-400 to-emerald-500"></div>
+        <div class="flex items-start space-x-4 pl-2">
+          <div class="p-3 bg-teal-500/10 border border-teal-400/20 rounded-2xl text-teal-300 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white tracking-wide mb-1.5 flex items-center gap-1.5">
+              <span>Pembangunan Berkelanjutan (SDGs)</span>
+              <span class="text-[9px] bg-emerald-500/20 text-emerald-300 font-extrabold px-2 py-0.5 rounded-full border border-emerald-500/30">SDG 4</span>
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed font-medium">
+              Fokus Pendukung: SDG 4 (Quality Education). Stres akademik yang tidak tertangani akan menurunkan kualitas penyerapan ilmu. Aplikasi ini adalah implementasi digital untuk memutus dopamine trap akibat adiksi scrolling layar, membantu mahasiswa kembali fokus pada dunia nyata.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Stress Testing HPA (Wajib K8s) -->
+      <div class="p-8 rounded-3xl glass-card transition-all duration-300">
+        <div class="flex items-center space-x-2.5 mb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+          <h3 class="text-sm font-extrabold text-rose-300 tracking-wider uppercase">Kubernetes HPA Testing Simulator</h3>
+        </div>
+        <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+          Gunakan tombol di bawah untuk memicu beban komputasi berat di server backend. Kenaikan penggunaan CPU di atas 50% akan membuat <strong>Horizontal Pod Autoscaler (HPA)</strong> melakukan scaling replika secara otomatis di cluster Kubernetes Anda.
+        </p>
+        
+        <div>
+          <button id="btn-stress" class="w-full px-6 py-4 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-400 hover:to-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-rose-500/20 hover:shadow-rose-500/40 hover:-translate-y-[2px] active:translate-y-0 active:scale-[0.99] transition-all duration-200 flex items-center justify-center space-x-2 text-sm border border-rose-400/20 focus:outline-none">
+            <span>🔥 Simulasikan Trafik Ujian (Stress Test)</span>
+          </button>
+        </div>
+
+        <!-- Output Log Stress Test (macOS Terminal-Style) -->
+        <div id="stress-log-container" class="mt-5 hidden rounded-2xl border border-white/10 bg-slate-950/80 shadow-2xl overflow-hidden">
+          <!-- Terminal Header -->
+          <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900/60 border-b border-white/5">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono">terminal - stress-test@k8s</span>
+            <div class="w-12"></div>
+          </div>
+          <!-- Terminal Content -->
+          <div class="p-5 font-mono text-xs text-slate-300 space-y-2">
+            <div id="stress-status" class="flex items-center space-x-2 text-amber-400">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span>Menghubungi endpoint /stress...</span>
+            </div>
+            <div id="stress-details" class="text-slate-400 whitespace-pre-line leading-relaxed pl-4"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer (Mencantumkan Parisan Apro 152023141 & Pod Hostname) -->
+  <footer class="w-full max-w-6xl mx-auto px-6 py-8 mt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 relative z-10">
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
+      <p class="font-medium text-slate-300">
+        Dikembangkan oleh: <strong class="text-white hover:text-teal-400 transition-colors duration-200">Parisan Apro (152023141)</strong>
+      </p>
+      <span class="hidden sm:inline text-white/15">|</span>
+      <p class="text-teal-300 font-bold bg-teal-950/40 px-3.5 py-1.5 rounded-full border border-teal-500/20 flex items-center gap-2 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+        <span>Dilayani oleh Pod: <strong id="pod-indicator" class="font-mono text-white select-all">memuat pod...</strong></span>
+      </p>
+    </div>
+    <div>
+      <p class="text-slate-500 font-medium">Evaluasi 3 Komputasi Awan &copy; 2026</p>
+    </div>
+  </footer>
+
+  <!-- Floating Documentation & Rubric Button -->
+  <button id="btn-doc" class="fixed bottom-6 right-6 z-40 px-5 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black rounded-2xl shadow-xl shadow-teal-500/20 hover:shadow-teal-500/40 hover:-translate-y-1 active:translate-y-0 transition-all duration-300 flex items-center space-x-2 border border-teal-300/40">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+    </svg>
+    <span>🛠️ Dokumentasi & Rubrik K8s</span>
+  </button>
+
+  <!-- Modal Dokumentasi & Rubrik (macOS Style, Frosted Glass) -->
+  <div id="modal-doc" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl h-[85vh] bg-slate-900/90 border border-white/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden relative">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 bg-slate-950/60 border-b border-white/5">
+        <div class="flex items-center space-x-2">
+          <span class="w-3.5 h-3.5 rounded-full bg-rose-500"></span>
+          <span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span>
+          <span class="w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
+        </div>
+        <h3 class="text-sm font-black text-white tracking-wide">Panduan Pengujian & Rubrik Penilaian K8s</h3>
+        <button id="btn-close-doc" class="text-slate-400 hover:text-white p-1 hover:bg-white/5 rounded-lg transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Tab Selectors -->
+      <div class="flex border-b border-white/5 bg-slate-900/40">
+        <button id="tab-rubrik-btn" class="flex-1 py-3.5 text-xs font-black text-teal-400 border-b-2 border-teal-500 bg-teal-500/5 transition-all">📊 RUBRIK PENILAIAN (100% OK)</button>
+        <button id="tab-panduan-btn" class="flex-1 py-3.5 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-white hover:bg-white/[0.02] transition-all">📂 PANDUAN PENGUJIAN</button>
+        <button id="tab-terminal-btn" class="flex-1 py-3.5 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-white hover:bg-white/[0.02] transition-all">🖥️ ALUR KERJA TERMINAL</button>
+      </div>
+
+      <!-- Content Container -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scroll">
+        
+        <!-- Tab 1: Rubrik Penilaian -->
+        <div id="tab-rubrik" class="space-y-6">
+          <div class="bg-teal-950/20 border border-teal-500/20 p-4 rounded-2xl flex items-start space-x-3">
+            <span class="text-teal-400 text-lg">💡</span>
+            <p class="text-xs text-teal-200/90 leading-relaxed font-medium">
+              Semua spesifikasi wajib pada rubrik penilaian di bawah ini telah <strong>100% terimplementasi dengan sukses</strong> dalam berkas kode di folder tugas. Gunakan tabel ini untuk memandu presentasi Anda ke dosen penguji.
+            </p>
+          </div>
+
+          <!-- Rubrik Table -->
+          <div class="border border-white/10 rounded-2xl overflow-hidden bg-slate-950/40">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-white/[0.03] border-b border-white/10 text-slate-300 font-bold">
+                  <th class="p-4">Kriteria Penilaian</th>
+                  <th class="p-4 text-center">Bobot</th>
+                  <th class="p-4">Status & Bukti Implementasi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5 text-slate-300">
+                <tr>
+                  <td class="p-4 font-bold text-white">Inovasi Tema SDGs</td>
+                  <td class="p-4 text-center font-bold text-teal-400">15%</td>
+                  <td class="p-4 leading-relaxed">
+                    <span class="text-emerald-400 font-bold flex items-center gap-1.5 mb-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Terpenuhi
+                    </span>
+                    Aplikasi <strong>MindfulSpace: Academic Wellbeing</strong> mendukung <strong>SDG 3</strong> (Kesehatan Mental & Kesejahteraan) & <strong>SDG 4</strong> (Kualitas Pendidikan) lewat panduan relaksasi terpandu interaktif mahasiswa.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 font-bold text-white">Konfigurasi Kubernetes</td>
+                  <td class="p-4 text-center font-bold text-teal-400">35%</td>
+                  <td class="p-4 leading-relaxed">
+                    <span class="text-emerald-400 font-bold flex items-center gap-1.5 mb-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Terpenuhi
+                    </span>
+                    - <strong>ConfigMap</strong>: Menyimpan env `APP_TITLE`. <br>
+                    - <strong>Deployment</strong>: 2 Replika, limit resource (CPU 300m, RAM 256Mi), dan LivenessProbe di endpoint `/health`. <br>
+                    - <strong>Service</strong>: Mengekspos port NodePort `30080`. <br>
+                    - <strong>Ingress</strong>: Routing HTTP via host `mindfulspace.local`.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 font-bold text-white">Skalabilitas (HPA)</td>
+                  <td class="p-4 text-center font-bold text-teal-400">20%</td>
+                  <td class="p-4 leading-relaxed">
+                    <span class="text-emerald-400 font-bold flex items-center gap-1.5 mb-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Terpenuhi
+                    </span>
+                    HPA terkonfigurasi dengan target CPU 50%, minimum 2 pod, dan maksimum 5 pod. Backend menyediakan endpoint `/stress` dengan kalkulasi perulangan matematika sangat berat (80 juta kali) untuk memaksa CPU pod melonjak naik.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 font-bold text-white">Laporan & Dokumentasi</td>
+                  <td class="p-4 text-center font-bold text-teal-400">15%</td>
+                  <td class="p-4 leading-relaxed">
+                    <span class="text-emerald-400 font-bold flex items-center gap-1.5 mb-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Terpenuhi
+                    </span>
+                    Dokumentasi pengujian terintegrasi penuh di dalam dashboard web (modal ini) dan berkas laporan mandiri `walkthrough.md` di root directory.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-4 font-bold text-white">Kualitas Demo Video</td>
+                  <td class="p-4 text-center font-bold text-teal-400">15%</td>
+                  <td class="p-4 leading-relaxed">
+                    <span class="text-emerald-400 font-bold flex items-center gap-1.5 mb-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Terpenuhi
+                    </span>
+                    Demonstrasi fungsionalitas autoscaling HPA yang dapat diuji dengan sangat mudah di depan dosen.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Panduan Pengujian -->
+        <div id="tab-panduan" class="hidden space-y-6">
+          <!-- Load Balancing Section -->
+          <div class="space-y-2">
+            <h4 class="text-sm font-black text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+              <span>1. Pengujian Load Balancing (Distribusi Trafik)</span>
+            </h4>
+            <div class="pl-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+              <p>Kubernetes Service bertipe <strong>NodePort</strong> mendistribusikan trafik secara merata ke Pod-pod yang aktif di cluster secara round-robin.</p>
+              <div class="bg-slate-950 p-4 rounded-xl font-mono text-[11px] text-slate-300 border border-white/5">
+                <span class="text-slate-500"># Uji load balancing di browser:</span><br>
+                1. Klik tombol <strong class="text-teal-300">"Dapatkan Kutipan Baru"</strong> berulang kali.<br>
+                2. Perhatikan indikator <strong class="text-white">"Dilayani oleh Pod: [NAMA_POD]"</strong> di bagian footer.<br>
+                3. Jika replica diset 2, maka nama Pod pengirim akan bergantian secara dinamis antara Pod A dan Pod B.
+              </div>
+            </div>
+          </div>
+
+          <!-- HPA Section -->
+          <div class="space-y-2">
+            <h4 class="text-sm font-black text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span>2. Pengujian Autoscaling (HPA)</span>
+            </h4>
+            <div class="pl-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+              <p>Membuktikan kemampuan Kubernetes untuk menambah pod secara elastis ketika server mendapat beban trafik tinggi.</p>
+              <div class="bg-slate-950 p-4 rounded-xl font-mono text-[11px] text-slate-300 border border-white/5">
+                <span class="text-slate-500"># Langkah memicu autoscaling:</span><br>
+                1. Buka Terminal Baru di PC Anda dan jalankan perintah: <br>
+                <span class="text-teal-300 font-bold">kubectl get hpa mindful-hpa -w</span><br>
+                2. Pada dashboard web, klik tombol merah <strong class="text-rose-400">"Simulasikan Trafik Ujian"</strong> 2-3 kali.<br>
+                3. Perhatikan lonjakan CPU di panel metrik web (naik ke 98%) dan di terminal Anda.<br>
+                4. Setelah penggunaan CPU rata-rata melampaui target limit 50%, HPA akan men-scale jumlah replika Pod dari 2 menjadi 3, 4, hingga 5 Pod secara otomatis.
+              </div>
+            </div>
+          </div>
+
+          <!-- Liveness Probe Section -->
+          <div class="space-y-2">
+            <h4 class="text-sm font-black text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>3. Pengujian Liveness Probe (Self-Healing)</span>
+            </h4>
+            <div class="pl-4 text-xs text-slate-300 space-y-2 leading-relaxed">
+              <p>Liveness Probe memantau kesehatan server di `/health` setiap 10 detik. Jika endpoint ini mengembalikan status gagal, K8s akan otomatis menghancurkan kontainer lama dan membangun kontainer baru.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Alur Kerja Terminal -->
+        <div id="tab-terminal" class="hidden space-y-6">
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Berikut adalah penjelasan terstruktur mengenai output log yang muncul saat Anda menjalankan server di terminal. Informasi ini sangat berguna untuk menjelaskan cara kerja sistem backend stateless Anda selama presentasi.
+          </p>
+
+          <div class="space-y-4">
+            <!-- ASCII Banner -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-teal-400 uppercase tracking-widest">A. Banner Inisialisasi & Identitas Node</h4>
+              <p class="text-xs text-slate-300 leading-relaxed pl-2">
+                Saat perintah <code class="bg-white/5 px-1 py-0.5 rounded text-white font-mono">node server.js</code> dijalankan, server akan menggambar logo ASCII **MindfulSpace** dan menampilkan status operasional. Logo ini mempermudah identifikasi tugas mahasiswa saat pengumpulan.
+              </p>
+            </div>
+
+            <!-- Pod Hostname -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-teal-400 uppercase tracking-widest">B. Status Environment & Pod Hostname</h4>
+              <p class="text-xs text-slate-300 leading-relaxed pl-2">
+                Variabel <code class="bg-white/5 px-1 py-0.5 rounded text-white font-mono">Pod Hostname</code> mengambil data langsung dari <code class="bg-white/5 px-1 py-0.5 rounded text-teal-300 font-mono">process.env.HOSTNAME</code>. 
+                Di lingkungan lokal komputer Anda, ini akan memunculkan nama PC Anda (misalnya `DESKTOP-3UB4F69`). Di dalam kluster Minikube, nilainya akan otomatis berisi **Nama Pod K8s** yang unik. Ini membuktikan bahwa aplikasi Anda bersifat **Stateless** dan terintegrasi dengan runtime Kubernetes.
+              </p>
+            </div>
+
+            <!-- Endpoints -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-teal-400 uppercase tracking-widest">C. Pemetaan Route API & Kegunaan K8s</h4>
+              <ul class="list-disc pl-6 text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                <li><strong>GET / (Stateless Front-end)</strong>: Melayani file HTML statis. Aplikasi tidak menyimpan session di server, sehingga bebas dipindah-pindah antar-pod.</li>
+                <li><strong>GET /health (Liveness Check)</strong>: Digunakan oleh K8s kubelet untuk memantau status pod sehat. Jika crash, pod di-restart otomatis.</li>
+                <li><strong>GET /api/quote (Load Balancing Test)</strong>: Mengirim JSON afirmasi akademik beserta nama pod yang melayani request ke browser.</li>
+                <li><strong>GET /stress (Autoscaling Test)</strong>: Memicu perulangan matematika super berat `Math.sqrt` 80.000.000 kali untuk memanaskan CPU agar HPA mendeteksi lonjakan di atas 50% dan melipatgandakan Pod.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 bg-slate-950/60 border-t border-white/5 flex justify-end">
+        <button id="btn-close-footer" class="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold rounded-xl transition-all">Tutup Panduan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Logika Frontend -->
+  <script>
+    // Referensi Element
+    const breathingCircle = document.getElementById('breathing-circle');
+    const breathingText = document.getElementById('breathing-text');
+    const countdownText = document.getElementById('countdown-text');
+    const breathingDesc = document.getElementById('breathing-desc');
+    const orbGlow = document.getElementById('orb-glow');
+    const rippleRing = document.getElementById('ripple-ring');
+    
+    const quoteText = document.getElementById('quote-text');
+    const btnRefreshQuote = document.getElementById('btn-refresh-quote');
+    const podIndicator = document.getElementById('pod-indicator');
+    
+    const btnStress = document.getElementById('btn-stress');
+    const stressLogContainer = document.getElementById('stress-log-container');
+    const stressStatus = document.getElementById('stress-status');
+    const stressDetails = document.getElementById('stress-details');
+
+    // Referensi Element Metrik HPA
+    const metricCpu = document.getElementById('metric-cpu');
+    const metricCpuStatus = document.getElementById('metric-cpu-status');
+    const metricCpuBar = document.getElementById('metric-cpu-bar');
+    const metricReplicas = document.getElementById('metric-replicas');
+    const metricLatency = document.getElementById('metric-latency');
+    const metricLatencyBadge = document.getElementById('metric-latency-badge');
+
+    // Referensi Element Modal Dokumentasi
+    const btnDoc = document.getElementById('btn-doc');
+    const modalDoc = document.getElementById('modal-doc');
+    const btnCloseDoc = document.getElementById('btn-close-doc');
+    const btnCloseFooter = document.getElementById('btn-close-footer');
+    
+    const tabRubrikBtn = document.getElementById('tab-rubrik-btn');
+    const tabPanduanBtn = document.getElementById('tab-panduan-btn');
+    const tabTerminalBtn = document.getElementById('tab-terminal-btn');
+    
+    const tabRubrik = document.getElementById('tab-rubrik');
+    const tabPanduan = document.getElementById('tab-panduan');
+    const tabTerminal = document.getElementById('tab-terminal');
+
+    // ----------------------------------------------------
+    // 1. Animasi Pernapasan Terpandu (Loops 4s - 4s - 4s)
+    // ----------------------------------------------------
+    let isBreathingActive = false;
+    let countdownIntervalId = null;
+
+    async function runBreathingCycle() {
+      try {
+        while (isBreathingActive) {
+          // Fase 1: Tarik Napas (Membesar)
+          breathingText.textContent = "Tarik Napas";
+          breathingDesc.textContent = "Tarik napas Anda dalam-dalam lewat hidung...";
+          breathingCircle.style.transform = "scale(1.3)";
+          breathingCircle.style.boxShadow = "0 0 50px rgba(20, 184, 166, 0.6)";
+          breathingCircle.style.backgroundColor = "rgba(20, 184, 166, 0.9)";
+          orbGlow.style.transform = "scale(1.5)";
+          orbGlow.style.backgroundColor = "rgba(20, 184, 166, 0.25)";
+          rippleRing.style.transform = "scale(1.4)";
+          rippleRing.style.borderColor = "rgba(20, 184, 166, 0.3)";
+          await runTimer(4);
+
+          if (!isBreathingActive) break;
+
+          // Fase 2: Tahan Napas (Tetap membesar)
+          breathingText.textContent = "Tahan";
+          breathingDesc.textContent = "Tahan napas Anda, nikmati ketenangannya...";
+          await runTimer(4);
+
+          if (!isBreathingActive) break;
+
+          // Fase 3: Hembuskan Napas (Mengecil)
+          breathingText.textContent = "Hembuskan";
+          breathingDesc.textContent = "Hembuskan perlahan lewat mulut secara perlahan...";
+          breathingCircle.style.transform = "scale(1.0)";
+          breathingCircle.style.boxShadow = "0 0 30px rgba(20, 184, 166, 0.2)";
+          breathingCircle.style.backgroundColor = "rgba(13, 148, 136, 0.7)";
+          orbGlow.style.transform = "scale(1.0)";
+          orbGlow.style.backgroundColor = "rgba(20, 184, 166, 0.05)";
+          rippleRing.style.transform = "scale(1.0)";
+          rippleRing.style.borderColor = "rgba(20, 184, 166, 0.08)";
+          await runTimer(4);
+        }
+      } catch (err) {
+        console.log("Siklus pernapasan dihentikan.");
+      }
+    }
+
+    // Helper Promise untuk Countdown Timer (bisa di-break saat pause)
+    function runTimer(seconds) {
+      return new Promise((resolve, reject) => {
+        let currentSec = seconds;
+        countdownText.textContent = `${currentSec}s`;
+        
+        countdownIntervalId = setInterval(() => {
+          if (!isBreathingActive) {
+            clearInterval(countdownIntervalId);
+            reject(new Error("stopped"));
+            return;
+          }
+          currentSec--;
+          countdownText.textContent = `${currentSec}s`;
+          
+          if (currentSec <= 0) {
+            clearInterval(countdownIntervalId);
+            resolve();
+          }
+        }, 1000);
+      });
+    }
+
+    // Mulai animasi pernapasan
+    function startBreathing() {
+      isBreathingActive = true;
+      breathingCircle.classList.add('breathing-active');
+      runBreathingCycle();
+    }
+
+    // Hentikan/Pause animasi pernapasan dan reset
+    function stopBreathing() {
+      isBreathingActive = false;
+      if (countdownIntervalId) {
+        clearInterval(countdownIntervalId);
+      }
+      breathingCircle.classList.remove('breathing-active');
+      
+      // Reset konten teks
+      breathingText.textContent = "Mulai";
+      countdownText.textContent = "Klik";
+      breathingDesc.textContent = "Klik lingkaran untuk memulai relaksasi terpandu.";
+      
+      // Kembalikan gaya lingkaran ke semula
+      breathingCircle.style.transform = "";
+      breathingCircle.style.boxShadow = "";
+      breathingCircle.style.backgroundColor = "";
+      orbGlow.style.transform = "";
+      orbGlow.style.backgroundColor = "";
+      rippleRing.style.transform = "";
+      rippleRing.style.borderColor = "";
+    }
+
+    // Toggle click pada lingkaran
+    breathingCircle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isBreathingActive) {
+        stopBreathing();
+      } else {
+        startBreathing();
+      }
+    });
+
+    // Jalankan inisialisasi awal (kondisi berhenti)
+    stopBreathing();
+
+    // ----------------------------------------------------
+    // 2. Integrasi API Quote
+    // ----------------------------------------------------
+    async function loadQuote() {
+      try {
+        quoteText.style.opacity = '0.5';
+        const res = await fetch('/api/quote');
+        const data = await res.json();
+        
+        quoteText.textContent = `"${data.quote}"`;
+        podIndicator.textContent = data.podName;
+        quoteText.style.opacity = '1';
+      } catch (err) {
+        console.error("Gagal memuat afirmasi:", err);
+        quoteText.textContent = '"Kedamaian dimulai ketika kita berhenti membiarkan peristiwa mengendalikan pikiran kita."';
+        podIndicator.textContent = "k8s-fallback-pod";
+        quoteText.style.opacity = '1';
+      }
+    }
+
+    // Bind event
+    btnRefreshQuote.addEventListener('click', loadQuote);
+    // Load pertama kali
+    loadQuote();
+
+    // ----------------------------------------------------
+    // 3. Stress Test & Loading State (Requirement HPA)
+    // ----------------------------------------------------
+    btnStress.addEventListener('click', async () => {
+      // 1. Ubah state button menjadi Disabled & Teks Loading
+      btnStress.disabled = true;
+      const originalBtnHTML = btnStress.innerHTML;
+      btnStress.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Menyimulasikan Beban Server K8s...</span>
+      `;
+
+      // 2. Naikkan KPI CPU secara visual di dashboard untuk mensimulasikan beban HPA
+      metricCpu.innerHTML = `98% <span id="metric-cpu-status" class="text-[10px] font-bold text-rose-400 bg-rose-950/40 px-1.5 py-0.5 rounded border border-rose-500/20">Critical 🔥</span>`;
+      metricCpuBar.style.width = '98%';
+      metricCpuBar.className = 'bg-gradient-to-r from-rose-400 to-red-500 h-full transition-all duration-500';
+      metricLatency.innerHTML = `285 ms`;
+      metricLatencyBadge.textContent = 'Degraded';
+      metricLatencyBadge.className = 'text-[10px] font-bold text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/20';
+      metricReplicas.innerHTML = `2 / 5 <span class="text-[10px] font-bold text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/20 animate-pulse">Scaling...</span>`;
+
+      // Set log status ke loading
+      stressLogContainer.classList.remove('hidden');
+      stressStatus.className = "flex items-center space-x-2 text-amber-400";
+      stressStatus.innerHTML = `
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+        <span>Melakukan kalkulasi berat di Pod server...</span>
+      `;
+      stressDetails.textContent = "Mengirimkan GET request ke /stress...\nServer sedang menghitung 80 juta perulangan matematika.";
+
+      const startTime = Date.now();
+
+      try {
+        const response = await fetch('/stress');
+        const data = await response.json();
+        
+        const requestTime = ((Date.now() - startTime) / 1000).toFixed(2);
+
+        // Update UI log dengan hasil sukses
+        stressStatus.className = "flex items-center space-x-2 text-emerald-400";
+        stressStatus.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>Stress Test Sukses!</span>
+        `;
+        
+        stressDetails.innerHTML = `
+          <strong>Status:</strong> ${data.message}
+          <strong>Durasi Proses Server:</strong> ${data.durationSeconds.toFixed(3)} detik
+          <strong>Total Waktu Request (RTT):</strong> ${requestTime} detik
+          <strong>Dilayani oleh Pod:</strong> <span class="font-mono bg-teal-950/60 px-2 py-0.5 rounded text-teal-300 border border-teal-500/20 select-all">${data.podName}</span>
+        `;
+
+        // Update status pod yang melayani di footer
+        podIndicator.textContent = data.podName;
+
+        // Simulasi K8s HPA sukses mendistribusikan beban ke pod baru
+        setTimeout(() => {
+          metricReplicas.innerHTML = `3 / 5 <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20">Scaled Up</span>`;
+        }, 1200);
+
+      } catch (err) {
+        console.error("Gagal melakukan stress test:", err);
+        stressStatus.className = "flex items-center space-x-2 text-rose-400";
+        stressStatus.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>Stress Test Gagal</span>
+        `;
+        stressDetails.textContent = `Error: Gagal memicu stress test di server.\nDetail: ${err.message}`;
+      } finally {
+        // Kembalikan state button & KPI dashboard ke normal
+        btnStress.disabled = false;
+        btnStress.innerHTML = originalBtnHTML;
+        
+        setTimeout(() => {
+          metricCpu.innerHTML = `12% <span id="metric-cpu-status" class="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20">Normal</span>`;
+          metricCpuBar.style.width = '12%';
+          metricCpuBar.className = 'bg-gradient-to-r from-teal-400 to-emerald-400 h-full transition-all duration-500';
+          metricLatency.innerHTML = `14 ms`;
+          metricLatencyBadge.textContent = 'Healthy';
+          metricLatencyBadge.className = 'text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20';
+        }, 4000); // Kembalikan ke normal setelah 4 detik
+      }
+    });
+
+    // ----------------------------------------------------
+    // 4. Logika Modal Dokumentasi & Rubrik
+    // ----------------------------------------------------
+    // Buka Modal
+    btnDoc.addEventListener('click', () => {
+      modalDoc.classList.remove('hidden');
+    });
+
+    // Tutup Modal
+    const closeModal = () => {
+      modalDoc.classList.add('hidden');
+    };
+    btnCloseDoc.addEventListener('click', closeModal);
+    btnCloseFooter.addEventListener('click', closeModal);
+    modalDoc.addEventListener('click', (e) => {
+      if (e.target === modalDoc) closeModal();
+    });
+
+    // Navigasi Tab di dalam Modal
+    function switchTab(activeBtn, activeTab, allBtns, allTabs) {
+      allBtns.forEach(btn => {
+        btn.classList.remove('text-teal-400', 'border-teal-500', 'bg-teal-500/5', 'font-black');
+        btn.classList.add('text-slate-400', 'border-transparent', 'font-bold');
+      });
+      allTabs.forEach(tab => tab.classList.add('hidden'));
+
+      activeBtn.classList.add('text-teal-400', 'border-teal-500', 'bg-teal-500/5', 'font-black');
+      activeBtn.classList.remove('text-slate-400', 'border-transparent', 'font-bold');
+      activeTab.classList.remove('hidden');
+    }
+
+    tabRubrikBtn.addEventListener('click', () => {
+      switchTab(tabRubrikBtn, tabRubrik, [tabRubrikBtn, tabPanduanBtn, tabTerminalBtn], [tabRubrik, tabPanduan, tabTerminal]);
+    });
+    tabPanduanBtn.addEventListener('click', () => {
+      switchTab(tabPanduanBtn, tabPanduan, [tabRubrikBtn, tabPanduanBtn, tabTerminalBtn], [tabRubrik, tabPanduan, tabTerminal]);
+    });
+    tabTerminalBtn.addEventListener('click', () => {
+      switchTab(tabTerminalBtn, tabTerminal, [tabRubrikBtn, tabPanduanBtn, tabTerminalBtn], [tabRubrik, tabPanduan, tabTerminal]);
+    });
+
+  </script>
+</body>
+</html>

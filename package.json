@@ -1,0 +1,14 @@
+{
+  "name": "mindfulspace-academic-wellbeing",
+  "version": "1.0.0",
+  "description": "Tugas Evaluasi 3 Komputasi Awan - Parisan Apro (152023141)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "author": "Parisan Apro",
+  "license": "MIT"
+}
